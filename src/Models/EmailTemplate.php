@@ -19,6 +19,7 @@ use Visualbuilder\EmailTemplates\Facades\TokenHelper;
  * @property int $id
  * @property string $key
  * @property array $from
+ * @property array $reply_to
  * @property string $name
  * @property string $view
  * @property object $cc
@@ -51,6 +52,7 @@ class EmailTemplate extends Model
             'content',
             'language',
             'logo',
+            'reply_to'
 
     ];
 
@@ -62,6 +64,7 @@ class EmailTemplate extends Model
             'created_at' => 'datetime:Y-m-d H:i:s',
             'updated_at' => 'datetime:Y-m-d H:i:s',
             'from' => 'array',
+            'reply_to' => 'array',
     ];
     /**
      * @var string[]

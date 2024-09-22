@@ -94,9 +94,10 @@ class EmailTemplateResource extends Resource
                             Grid::make(['default' => 1, 'sm' => 1, 'md' => 2])
                                 ->schema(
                                     [
-                                        Select::make('key')
-                                            ->options(config('filament-email-templates.template_keys'))
-                                            ->searchable()
+                                        TextInput::make('key')
+                                            ->afterStateUpdated(
+                                                fn (Set $set, ?string $state) => $set('key', Str::slug($state))
+                                            )
                                             ->label(__('vb-email-templates::email-templates.form-fields-labels.key'))
                                             ->hint(__('vb-email-templates::email-templates.form-fields-labels.key-hint'))
                                             ->required()

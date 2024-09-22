@@ -21,6 +21,7 @@ class EmailTemplatesServiceProvider extends PackageServiceProvider
             ->hasMigrations(['create_email_templates_themes_table','create_email_templates_table'])
             ->hasConfigFile(['filament-email-templates', 'filament-tiptap-editor'])
             ->hasAssets()
+            ->hasTranslations()
             ->hasViews('vb-email-templates')
             ->runsMigrations()
             ->hasCommands([
@@ -31,6 +32,9 @@ class EmailTemplatesServiceProvider extends PackageServiceProvider
     public function packageRegistered(): void
     {
         parent::packageRegistered();
+
+        $this->loadJsonTranslationsFrom(__DIR__.'/../resources/lang/');
+
 
         $this->app->singleton(CreateMailableInterface::class, CreateMailableHelper::class);
         $this->app->singleton(FormHelperInterface::class, FormHelper::class);

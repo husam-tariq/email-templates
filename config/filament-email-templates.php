@@ -1,5 +1,8 @@
 <?php
 
+use Filament\Pages\SubNavigationPosition;
+use Visualbuilder\EmailTemplates\DefaultTokenHelper;
+
 return [
     /**
      * If you wish to customise the table name change this before migration
@@ -31,7 +34,7 @@ return [
      *  }
      */
 
-    'tokenHelperClass' => \Visualbuilder\EmailTemplates\DefaultTokenHelper::class,
+    'tokenHelperClass' => DefaultTokenHelper::class,
 
 
     /**
@@ -47,13 +50,14 @@ return [
      * Admin panel navigation options
      */
     'navigation' => [
+        'enabled' => true,
         'templates' => [
             'sort' => 10,
             'label' => 'Email Templates',
             'icon' => 'heroicon-o-envelope',
             'group' => 'Content',
             'cluster' => false,
-            'position' => \Filament\Pages\SubNavigationPosition::Top
+            'position' => SubNavigationPosition::Top
         ],
         'themes' => [
             'sort' => 20,
@@ -61,7 +65,7 @@ return [
             'icon' => 'heroicon-o-paint-brush',
             'group' => 'Content',
             'cluster' => false,
-            'position' => \Filament\Pages\SubNavigationPosition::Top
+            'position' => SubNavigationPosition::Top
         ],
     ],
 
@@ -72,13 +76,13 @@ return [
     'template_view_path' => 'vb-email-templates::email',
 
     'template_keys' => [
-            'user-welcome'=>'User Welcome Email',
-            'user-request-reset'=>'User Request Password Reset',
-            'user-password-reset-success'=>'User Password Reset',
-            'user-locked-out'=>'User Account Locked Out',
-            'user-verify-email'=>'User Verify Email',
-            'user-verified'=>'User Verified',
-            'user-login'=>'User Logged In',
+        'user-welcome' => 'User Welcome Email',
+        'user-request-reset' => 'User Request Password Reset',
+        'user-password-reset-success' => 'User Password Reset',
+        'user-locked-out' => 'User Account Locked Out',
+        'user-verify-email' => 'User Verify Email',
+        'user-verified' => 'User Verified',
+        'user-login' => 'User Logged In',
     ],
 
     //Default Logo
@@ -95,13 +99,18 @@ return [
     'content_width' => '600',
 
     //Contact details included in default email templates
-    'customer-services' => ['email' => 'support@yourcompany.com',
-        'phone' => '+441273 455702'],
+    'customer-services' => [
+        'email' => 'support@yourcompany.com',
+        'phone' => '+441273 455702'
+    ],
 
     //Footer Links
     'links' => [
         ['name' => 'Website', 'url' => 'https://yourwebsite.com', 'title' => 'Goto website'],
-        ['name' => 'Privacy Policy', 'url' => 'https://yourwebsite.com/privacy-policy', 'title' => 'View Privacy Policy'],
+        [
+            'name' => 'Privacy Policy', 'url' => 'https://yourwebsite.com/privacy-policy',
+            'title' => 'View Privacy Policy'
+        ],
     ],
 
     //Options for alternative languages

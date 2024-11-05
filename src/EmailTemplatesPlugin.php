@@ -2,14 +2,20 @@
 
 namespace Visualbuilder\EmailTemplates;
 
+use Closure;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
+use Filament\Support\Concerns\EvaluatesClosures;
 use Visualbuilder\EmailTemplates\Resources\EmailTemplateResource;
 use Visualbuilder\EmailTemplates\Resources\EmailTemplateThemeResource;
 
 class EmailTemplatesPlugin implements Plugin
 {
+    use EvaluatesClosures;
+
     public string $navigationGroup;
+
+    protected bool|Closure $navigation = true;
 
     public static function make(): static
     {
@@ -26,6 +32,19 @@ class EmailTemplatesPlugin implements Plugin
         return 'filament-email-templates';
     }
 
+    public function enableNavigation(bool|Closure $callback = true): static
+    {
+        $this->navigation = $callback;
+
+        return $this;
+    }
+
+    public function shouldRegisterNavigation(): bool
+    {
+        return $this->evaluate($this->navigation) === true ?? config('filament-email-templates.navigation.enabled',
+            true);
+    }
+
     public function navigationGroup($navigationGroup): static
     {
         $this->navigationGroup = $navigationGroup;
@@ -40,8 +59,8 @@ class EmailTemplatesPlugin implements Plugin
     public function register(Panel $panel): void
     {
         $panel->resources([
-                EmailTemplateResource::class,
-                EmailTemplateThemeResource::class,
+            EmailTemplateResource::class,
+            EmailTemplateThemeResource::class,
         ]);
 
     }

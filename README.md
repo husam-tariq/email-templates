@@ -5,44 +5,62 @@
 [![run-tests](https://github.com/visualbuilder/email-templates/actions/workflows/run-tests.yml/badge.svg)](https://github.com/visualbuilder/email-templates/actions/workflows/run-tests.yml)
 
 ### Why businesses and applications should use Email Templates
+
 - **Time-saving**: Email templates eliminate the need to create emails from scratch, saving valuable time and effort.
-- **Customizability**: Quick editing capabilities enable employees to personalize the content of the templates while maintaining a professional appearance.
-- **Consistent branding**: Templates ensure that all emails adhere to the brand's guidelines, reinforcing brand recognition and professionalism.
-- **Professional appearance**: Well-designed templates provide a polished and consistent look, enhancing the business's credibility and reputation.
+- **Customizability**: Quick editing capabilities enable employees to personalize the content of the templates while
+  maintaining a professional appearance.
+- **Consistent branding**: Templates ensure that all emails adhere to the brand's guidelines, reinforcing brand
+  recognition and professionalism.
+- **Professional appearance**: Well-designed templates provide a polished and consistent look, enhancing the business's
+  credibility and reputation.
 - **Streamlined communication**: Prompt and efficient communication.
-- **Flexibility**: Templates can be adapted for various purposes, such as promotional emails, customer support responses, newsletters, and more.
-- **Easy updates**: Templates can be easily modified to reflect changes in offers, policies, or design elements, ensuring that communication remains current and aligned with business objectives.
-- **Standardization**: Templates enforce a standardized structure and format for emails, reducing errors and improving clarity in communication.
-- **Scalability**: Email templates facilitate consistent messaging even as the business grows, ensuring a cohesive customer experience across all interactions.
-- **Improved productivity**: With quick access to templates, employees can focus more on core tasks, increasing overall productivity within the business.
+- **Flexibility**: Templates can be adapted for various purposes, such as promotional emails, customer support
+  responses, newsletters, and more.
+- **Easy updates**: Templates can be easily modified to reflect changes in offers, policies, or design elements,
+  ensuring that communication remains current and aligned with business objectives.
+- **Standardization**: Templates enforce a standardized structure and format for emails, reducing errors and improving
+  clarity in communication.
+- **Scalability**: Email templates facilitate consistent messaging even as the business grows, ensuring a cohesive
+  customer experience across all interactions.
+- **Improved productivity**: With quick access to templates, employees can focus more on core tasks, increasing overall
+  productivity within the business.
 
 ### This package provides:-
+
 - Content management for email templates allowing authorised users to edit email template content in the admin.
-- Templates can include model attribute tokens or config values which will be replaced, eg ##user.name## or ##config.app.name##
+- Templates can include model attribute tokens or config values which will be replaced, eg ##user.name## or
+  ##config.app.name##
 - Templates can be saved with different locales for multi-lingual capability.
-- A generic method for quickly creating mail classes to speed up adding new templates and faster automation possiblities.
+- A generic method for quickly creating mail classes to speed up adding new templates and faster automation
+  possiblities.
 - Theme editor - Set your own colours and apply to specific templates.
 
-We use the standard Laravel mail sending capability, the package simply allows content editing and faster adding of new template Classes
+We use the standard Laravel mail sending capability, the package simply allows content editing and faster adding of new
+template Classes
 
 ![Email Preview](https://raw.githubusercontent.com/visualbuilder/email-templates/3.x/media/ThemeEditor.jpg)
 
 ## Installation
 
 Get the package via composer:
+
 ```bash
 composer require visualbuilder/email-templates
 ```
-Running the install command will copy the template views, migrations, seeders and config file to your app.  
+
+Running the install command will copy the template views, migrations, seeders and config file to your app.
 
 The --seed option will populate 7 default templates which you can then edit in the admin panel.
+
 ```bash
  php artisan filament-email-templates:install --seed
 ```
+
 Note: The seeder can also be edited directly if you wish to prepopulate with your own content.
 `database\Seeders\EmailTemplateSeeder.php`
 
 ### Adding the plugin to a panel
+
 Add this plugin to panel using plugins() method in app/Providers/Filament/AdminPanelProvider.php:
 
 ```php
@@ -58,16 +76,63 @@ public function panel(Panel $panel): Panel
         ]);
 }
 ```
+
 Menu Group and sort order can be set in the config
+
+### Enabling navigation
+
+In the config file ``config/filament-email-templates.php`` navigation can be disabled/enabled
+
+```php
+    /**
+     * Admin panel navigation options
+     */
+    'navigation' => [
+        'enabled' => true,
+        'templates' => [
+            'sort' => 10,
+            'label' => 'Email Templates',
+            'icon' => 'heroicon-o-envelope',
+            'group' => 'Content',
+            'cluster' => false,
+            'position' => SubNavigationPosition::Top
+        ],
+        'themes' => [
+            'sort' => 20,
+            'label' => 'Email Template Themes',
+            'icon' => 'heroicon-o-paint-brush',
+            'group' => 'Content',
+            'cluster' => false,
+            'position' => SubNavigationPosition::Top
+        ],
+    ],
+
+```
+
+Or you can use a closure to enable navigation only for specific users:
+
+```php
+// AdminPanelProvider.php
+    ->plugins([
+// ...
+        EmailTemplatesPlugin::make()
+                ->enableNavigation(
+                    fn () => auth()->user()->can('view_email_templates') || auth()->user()->can('view_any_email_templates)'),
+               ),
+    ])
+```
 
 ## Usage
 
 ### HTML Editor
+
 Edit email content in the admin and use tokens to inject model or config content.
 ![Email Preview](https://raw.githubusercontent.com/visualbuilder/email-templates/3.x/media/EmailEditor.png)
 
 ### Tokens
-Token format is ##model.attribute##.  When calling the email pass any referenced models to replace the tokens automatically.
+
+Token format is ##model.attribute##. When calling the email pass any referenced models to replace the tokens
+automatically.
 
 You can also include config values in the format ##config.file.key## eg ##config.app.name##.
 
@@ -83,26 +148,29 @@ You can also include config values in the format ##config.file.key## eg ##config
         'app.url',
         'email-templates.customer-services'
 ```
+
 ### Implementing out of the box templates
 
-Emails may be sent directly, via a notification or an event listener.  
+Emails may be sent directly, via a notification or an event listener.
 
 The following email templates are included to get you started and show different methods of sending.
 
- - **User Registered**  - Welcome them to the platform
- - **User Verify Email** - Check they are human
- - **User Verified Email** - Yes they are
- - **User Request Password Reset** - Let them change the password
- - **User Password Reset Success** - Yay, you changed your password
- - **User Locked Out** - Oops - What to do now?
- - **User Login** - Success
+- **User Registered**  - Welcome them to the platform
+- **User Verify Email** - Check they are human
+- **User Verified Email** - Yes they are
+- **User Request Password Reset** - Let them change the password
+- **User Password Reset Success** - Yay, you changed your password
+- **User Locked Out** - Oops - What to do now?
+- **User Login** - Success
 
 Not all systems will require a login notification, but it's good practice for security so included here.
 
 #### New User Registered Email
+
 A new **Registered** event is triggered when creating a new user.
 
-We want to welcome new users with a friendly email so we've included a listener for the Illuminate\Auth\Events\Registered Event
+We want to welcome new users with a friendly email so we've included a listener for the
+Illuminate\Auth\Events\Registered Event
 which will send the email if enabled in the config:-
 
 ```php
@@ -117,7 +185,9 @@ which will send the email if enabled in the config:-
 ```
 
 #### User Verify Email
-This notification is built in to Laravel so we have overidden the default toMail function to use our custom email template.
+
+This notification is built in to Laravel so we have overidden the default toMail function to use our custom email
+template.
 
 For reference this is done in the `EmailTemplatesAuthServiceProvider`.
 
@@ -129,11 +199,12 @@ To Enable email verification ensure the User model implements the Laravel MustVe
 class User extends Authenticatable implements MustVerifyEmail
 ```
 
-and include the **verified** middleware in your routes. 
-
+and include the **verified** middleware in your routes.
 
 #### User Request Password Reset
-Another Laravel built in notification, but to enable the custom email just add this function to your authenticatable user model.
+
+Another Laravel built in notification, but to enable the custom email just add this function to your authenticatable
+user model.
 
 ```php
 
@@ -152,11 +223,13 @@ use Visualbuilder\EmailTemplates\Notifications\UserResetPasswordRequestNotificat
     }
 ```
 
-
 ### Customising the email template
-Some theme colour options have been provided.  Email templates will use the default theme unless you specify otherwise on the email template.
+
+Some theme colour options have been provided. Email templates will use the default theme unless you specify otherwise on
+the email template.
 
 In the config file ``config/filament-email-templates.php`` logo, contacts, links and admin preferences can be set
+
 ```php
 
     //Default Logo
@@ -180,23 +253,31 @@ In the config file ``config/filament-email-templates.php`` logo, contacts, links
     ],
 
 ```
+
 If you wish to directly edit the template blade files, see the primary template here:
+
 - **Path**: `resources/views/vendor/vb-email-templates/email/default.php`
 
 New templates in this directory will be automatically visible in the email template editor dropdown for selection.
 
 #### Useful Tip
-Not all email clients (e.g., Outlook) render CSS from a stylesheet effectively. To ensure maximum compatibility, it's best to **put styles inline**. For checking how your email looks across different clients, [Litmus Email Previews](https://www.litmus.com/landing-page/email-previews) is highly recommended.
+
+Not all email clients (e.g., Outlook) render CSS from a stylesheet effectively. To ensure maximum compatibility, it's
+best to **put styles inline**. For checking how your email looks across different
+clients, [Litmus Email Previews](https://www.litmus.com/landing-page/email-previews) is highly recommended.
 
 ### Translations
+
 Each email template is identified by a key and a language:
 
 - **Key**: `user-password-reset`
 - **Language**: `en_gb`
 
-This allows the relevant template to be selected based on the users locale - You will need to save the users preferred language to implement this.
+This allows the relevant template to be selected based on the users locale - You will need to save the users preferred
+language to implement this.
 
-Please note laravel default locale is just "en" we prefer to separate British and American English so typically use en_GB and en_US instead but you can set this value as you wish.
+Please note laravel default locale is just "en" we prefer to separate British and American English so typically use
+en_GB and en_US instead but you can set this value as you wish.
 
 Languages that should be shown on the language picker can be set in the config
 
@@ -219,10 +300,10 @@ Languages that should be shown on the language picker can be set in the config
 Flag icons are loaded from CDN: https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css
 see https://www.npmjs.com/package/flag-icons
 
-
 ### Creating new Mail Classes
 
-We've currently opted to keep using a separate Mailable Class for each email type.  This means when you create a new template in the admin, it will require a new php Class.
+We've currently opted to keep using a separate Mailable Class for each email type. This means when you create a new
+template in the admin, it will require a new php Class.
 The package provides an action to build the class if the file does not exist in app\Mail\VisualBuilder\EmailTemplates.
 
 ![Build Class](https://raw.githubusercontent.com/visualbuilder/email-templates/3.x/media/BuildClass.png)
@@ -257,6 +338,7 @@ class MyFunkyNewEmail extends Mailable
 ```
 
 ### Including other models in the email for token replacement
+
 Just pass through the models you need and assign them in the constructor.
 
 ```php
@@ -277,12 +359,11 @@ class MyFunkyNewEmail extends Mailable
 
 In this example you can then use **##booking.date##** or whatever attributes are available in the booking model.
 
-If you need to derive some attribute you can add Accessors to your model.  
+If you need to derive some attribute you can add Accessors to your model.
 
 Both of these function will allow you to use:-
 
 **##user.full_name##** in the email template:-
-
 
 ```php
 public function getFullNameAttribute()
@@ -290,7 +371,9 @@ public function getFullNameAttribute()
   return $this->firstname.' '.$this->lastname;
 }
 ```
+
 OR
+
 ```php
 protected function fullName(): Attribute
 {
@@ -300,8 +383,8 @@ protected function fullName(): Attribute
 }
 ```
 
-
 ### Adding Attachments
+
 In here you can see how to pass an attachment:-
 
 The attachment should be passed to the Mail Class and set as a public property.
@@ -395,7 +478,7 @@ You should also include the filetype.
     }
 ```
 
-To maximise compatibility we've kept with the L9 mailable methods -> which still work on L10. 
+To maximise compatibility we've kept with the L9 mailable methods -> which still work on L10.
 
 ### Testing
 
@@ -417,7 +500,7 @@ If you discover any security related issues, please email support@ekouk.com inst
 
 ## Credits
 
--   [Visual Builder](https://github.com/visualbuilder)
+- [Visual Builder](https://github.com/visualbuilder)
 
 ## License
 

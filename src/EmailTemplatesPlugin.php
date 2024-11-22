@@ -49,7 +49,7 @@ class EmailTemplatesPlugin implements Plugin
         $this->navigationGroup = $navigationGroup;
         return $this;
     }
-    
+
 
     public function getNavigationGroup(): ?string
     {

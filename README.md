@@ -4,10 +4,14 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/visualbuilder/email-templates.svg?style=flat-square)](https://packagist.org/packages/visualbuilder/email-templates)
 [![run-tests](https://github.com/visualbuilder/email-templates/actions/workflows/run-tests.yml/badge.svg)](https://github.com/visualbuilder/email-templates/actions/workflows/run-tests.yml)
 
+
+![Email Preview](https://raw.githubusercontent.com/visualbuilder/email-templates/3.x/media/social-card.jpg)
+
+
 ### Why businesses and applications should use Email Templates
 
 - **Time-saving**: Email templates eliminate the need to create emails from scratch, saving valuable time and effort.
-- **Customizability**: Quick editing capabilities enable employees to personalize the content of the templates while
+- **Customisability**: Quick editing capabilities enable employees to personalise the content of the templates while
   maintaining a professional appearance.
 - **Consistent branding**: Templates ensure that all emails adhere to the brand's guidelines, reinforcing brand
   recognition and professionalism.
@@ -18,7 +22,7 @@
   responses, newsletters, and more.
 - **Easy updates**: Templates can be easily modified to reflect changes in offers, policies, or design elements,
   ensuring that communication remains current and aligned with business objectives.
-- **Standardization**: Templates enforce a standardized structure and format for emails, reducing errors and improving
+- **Standardisation**: Templates enforce a standardized structure and format for emails, reducing errors and improving
   clarity in communication.
 - **Scalability**: Email templates facilitate consistent messaging even as the business grows, ensuring a cohesive
   customer experience across all interactions.
@@ -38,10 +42,17 @@
 We use the standard Laravel mail sending capability, the package simply allows content editing and faster adding of new
 template Classes
 
+### Theme Editor
 ![Email Preview](https://raw.githubusercontent.com/visualbuilder/email-templates/3.x/media/ThemeEditor.jpg)
 
-## Installation
+### HTML Email Template Editor
 
+Edit email content in the admin and use tokens to inject model or config content.
+
+![Email Preview](https://raw.githubusercontent.com/visualbuilder/email-templates/3.x/media/EmailEditor.png)
+
+
+## Installation
 Get the package via composer:
 
 ```bash
@@ -124,10 +135,7 @@ Or you can use a closure to enable navigation only for specific users:
 
 ## Usage
 
-### HTML Editor
 
-Edit email content in the admin and use tokens to inject model or config content.
-![Email Preview](https://raw.githubusercontent.com/visualbuilder/email-templates/3.x/media/EmailEditor.png)
 
 ### Tokens
 

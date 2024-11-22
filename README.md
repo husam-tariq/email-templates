@@ -1,8 +1,9 @@
 # Email template editor for Filament 3.0
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/visualbuilder/email-templates.svg?style=flat-square)](https://packagist.org/packages/visualbuilder/email-templates)
-[![Total Downloads](https://img.shields.io/packagist/dt/visualbuilder/email-templates.svg?style=flat-square)](https://packagist.org/packages/visualbuilder/email-templates)
+![Packagist Downloads](https://img.shields.io/packagist/dt/visualbuilder/email-templates)
 [![run-tests](https://github.com/visualbuilder/email-templates/actions/workflows/run-tests.yml/badge.svg)](https://github.com/visualbuilder/email-templates/actions/workflows/run-tests.yml)
+![GitHub last commit](https://img.shields.io/github/last-commit/visualbuilder/email-templates)
 
 
 ![Email Preview](https://raw.githubusercontent.com/visualbuilder/email-templates/3.x/media/social-card.jpg)

@@ -212,8 +212,64 @@ and include the **verified** middleware in your routes.
 
 #### User Request Password Reset
 
-Another Laravel built in notification, but to enable the custom email just add this function to your authenticatable
-user model.
+Replacing the Filament default email requires extending the Filament RequestPasswordReset class to override the default request method like this:-
+
+```php
+
+namespace App\Filament\Resources\Auth;
+
+use Visualbuilder\EmailTemplates\Notifications\UserResetPasswordRequestNotification;
+
+
+class RequestPasswordReset extends \Filament\Pages\Auth\PasswordReset\RequestPasswordReset
+{
+    public function request(): void
+    {
+        try {
+            $this->rateLimit(2);
+        } catch (TooManyRequestsException $exception) {
+            $this->getRateLimitedNotification($exception)?->send();
+            return;
+        }
+
+        $data = $this->form->getState();
+
+        $status = Password::broker(Filament::getAuthPasswordBroker())->sendResetLink(
+            $data,
+            function (CanResetPassword $user, string $token): void {
+                if (! method_exists($user, 'notify')) {
+                    $userClass = $user::class;
+                    throw new Exception("Model [{$userClass}] does not have a [notify()] method.");
+                }
+                $tokenUrl = Filament::getResetPasswordUrl($token, $user);
+
+                /**
+                * Use our custom notification is the only difference.
+                */
+                $user->notify( new UserResetPasswordRequestNotification($tokenUrl));
+            },
+        );
+
+        if ($status !== Password::RESET_LINK_SENT) {
+            Notification::make()
+                ->title(__($status))
+                ->danger()
+                ->send();
+
+            return;
+        }
+
+        Notification::make()
+            ->title(__($status))
+            ->success()
+            ->send();
+
+        $this->form->fill();
+    }
+}
+```
+
+### User Password Reset Success Notification
 
 ```php
 
